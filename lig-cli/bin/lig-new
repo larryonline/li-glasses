@@ -1,0 +1,7 @@
+#!/usr/bin/env node
+
+
+const {edit} = require('external-editor')
+const text = edit("make your own scheme")
+
+console.log(text)

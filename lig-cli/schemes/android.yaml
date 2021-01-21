@@ -1,0 +1,12 @@
+name: android scheme
+properties: [datetime, pid, tid, level, tag, content]
+schemes:
+  line: 
+    pattern: <datetime><pid><tid><level><tag>:<content>
+    formats: 
+      datetime: MM-dd HH:mm:ss.zzz
+      pid: \d+
+      tid: \d+
+      level: \w
+      tag: \w+
+      content: .*

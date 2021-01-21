@@ -1,0 +1,53 @@
+#!/usr/bin/env node
+const fs = require('then-fs')
+const path = require('path')
+const {find} = require('../lib/util.js')
+
+const env = require('../lib/env.js')
+
+try {
+    env.check()
+    console.log(`<lig folder> was initialized, you don't need do this again.`)
+    process.exit(0)
+} catch(e) {}
+
+
+try {
+    if (path.basename(env.root()).endsWith('.lig')) {
+        throw {code: 0xFFFFFE, message:`Can not intialize a <lig folder> which name is ".lig"`}
+    }
+} catch(e) {
+    console.dir(e)
+    process.exit(1)
+}
+
+
+// 读取概览文件
+const summary = path.join(env.local('home'), 'summary')
+
+
+var files = find(env.root());
+
+
+    
+// 路径相对化
+files = files.map(item => path.relative(env.root(), item))
+    
+    // 文件过滤
+    // .filter(item => !(/\.lig/.test(item)))
+
+    // 只保留 log 后缀名的文件
+    // .filter(item => (/[\.log|\.txt]$/.test(item)))
+
+    // 
+    // .filter(item => (/^S820A\/Android/.test(item)))
+
+
+console.dir(files)
+
+
+// const index_file = path.join(env.local('home'), 'index');
+
+// fsp.exists(index_file).then()
+
+
