@@ -1,0 +1,111 @@
+#!/usr/bin/env node
+
+
+
+const path = require('path')
+const fs = require('fs')
+const EXECUTE_ROOT = process.cwd();
+
+const {program} = require('commander');
+
+
+// setup 
+program.version('0.0.1')
+
+program
+    .arguments('<files...>')
+    .option('-f, --filter <regx>', '文件过滤器, 启用指定过滤器. 会在读取文件之前过滤掉不匹配的文件', '')
+    .option('-p, --parser <parser>', '行解析器, 启用指定的解析器, 解析每一行log 默认 android 解析器', 'android_log_parser')
+    .option('-l, --line <regx>', '行过滤器, 启用指定过滤器. 会在读取文件时过滤掉不匹配的行', '')
+    .option('-r, --render <render>', '行渲染器, 启用指定的渲染器, 渲染每一行log', 'defulat_render')
+    .action((files, options, command) => {
+        console.dir(options)
+
+        // handler files
+        files = normalize(files)
+        
+        // start program
+        require('../index')(files, options)
+    }) 
+
+program.parse()
+
+
+
+function normalize(files) {
+
+    var normalized = []
+    for (var i in files) {
+        var file = files[i]
+
+        // 转换成绝对路径
+        if (!path.isAbsolute(file)) {
+            file = path.join(EXECUTE_ROOT, file);
+        }
+
+        // 获取文件列表
+        console.log('prepare to fetch: ', file)
+        normalized = normalized.concat(fetchFilePath(file))
+    }
+    return normalized;
+}
+
+function fetchFilePath(file) {
+
+    var stat = fs.statSync(file)
+    var result = []
+    if (stat.isDirectory()) {
+        // console.log(`[D]${file}`)
+        var dir = fs.readdirSync(file)
+        for (var i in dir) {
+            var file_path = path.join(file, dir[i])
+            result = result.concat(fetchFilePath(file_path))
+        }
+
+    } else if(stat.isFile()) {
+        // console.log(`[F]${file}`)
+        result.push(file)
+    } else {
+        console.log('ignore file: ', file)
+    }
+
+    return result;
+
+
+
+    dir = fs.fs.readdirSync(folder);
+
+    var result = []
+    for (var i in dir) {
+        var file = dir[i]
+
+        var stat = fs.statSync(file)
+        if (stat.isDirectory()) {
+            result = result.concat(fetchFilePath(file))
+        } else if(stat.isFile()) {
+            result.push(file)
+        } else {
+            console.log('unknown file: ', file)
+        }
+
+    }
+
+
+}
+
+// const path = require('path')
+
+
+
+// var folders = []
+// for (var index in argv) {
+//     var file = argv[index]
+//     if (path.isAbsolute(file)) {
+//         folders.push(file)
+//     } else {
+//         folders.push(path.join(EXECUTE_ROOT, file))
+//     }
+// }
+
+// 执行
+// require('../index')(folders);
