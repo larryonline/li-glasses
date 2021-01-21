@@ -1,0 +1,8 @@
+- code: 0
+  message: successful
+
+- code: 0xFFFFFF  # not a <lig folder>
+  message: Looks like it's not a <lig folder>, you should do "lig init" firstly
+
+- code: 0xFFFFFE # can not intialize a <lig folder> which name is ".lig"
+  message: Can not intialize a <lig folder> which name is ".lig"

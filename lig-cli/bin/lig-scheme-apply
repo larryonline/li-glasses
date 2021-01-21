@@ -1,0 +1,5 @@
+#!/usr/bin/env node
+
+
+
+console.log('apply your scheme on current <lig folder>')

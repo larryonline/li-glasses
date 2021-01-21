@@ -1,0 +1,9 @@
+#!/usr/bin/env node
+
+// const commander = require('commander')
+// const program = new commander.Command()
+
+
+// program.parse()
+
+console.log('list all scheme which you added')

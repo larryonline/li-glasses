@@ -1,0 +1,29 @@
+#!/usr/bin/env node
+const os = require('os')
+const path = require('path')
+const {Command} = require('commander')
+const program = new Command();
+
+const LIG_HOME = process.env['LIG_HOME'] || path.join(os.homedir(), '.lig')
+const LigCli = require('../')
+
+
+program
+        .version('0.0.1')
+
+program
+        .command('show [schemes...]')
+        .description('show contents under lig scheme')
+        .action((schemes) => {
+                // 配置cli
+                const cli = LigCli(LIG_HOME);
+                
+                // 处理命令行级别的抽象.
+                for (var i in schemes) {
+                        cli.apply(schemes[i])
+                }
+                // 执行指令
+                cli.show(process.cwd())
+        })
+
+program.parse(process.argv);

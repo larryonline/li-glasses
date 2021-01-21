@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+
+const {Command} = require('commander');
+
+
+const program = new Command();
+program
+    .command('add', 'add new scheme into lig')
+    .command('list', 'list all added scheme', {isDefault: true})
+    .command('rm', 'remove scheme from lig')
+    .command('apply', 'apply scheme on current folder')
+    .command('search', 'search scheme from https://liglog.cn')
+    .parse(process.argv)
+
+
